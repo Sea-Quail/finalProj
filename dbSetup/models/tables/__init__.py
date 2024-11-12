@@ -388,6 +388,7 @@ class Fielding(Base):
     f_CS = Column(SmallInteger, nullable=True)
     f_ZR = Column(SmallInteger, nullable=True)
 
+<<<<<<< HEAD
 #Alter database to where note attribute is of length 101
 class HallofFame(Base):
     __tablename__ = "halloffame"
@@ -406,3 +407,16 @@ class HallofFame(Base):
 
 
 
+=======
+class HomeGames(Base):
+    __tablename__ = "homegames"
+    homegames_ID = Column(Integer, primary_key=True, nullable=False)
+    teamID = Column(String(3), ForeignKey("teams.teamID"), nullable=False)
+    parkID = Column(String, ForeignKey("parks.parkID"), nullable=False)
+    yearID = Column(SmallInteger, nullable=False)
+    firstGame = Column(Date, nullable=True)
+    lastGame = Column(Date, nullable=True)
+    games = Column(Integer, nullable=True)
+    openings = Column(Integer, nullable=True)
+    attendance = Column(Integer, nullable=True)
+>>>>>>> 6ee8472 (homegames setup!)

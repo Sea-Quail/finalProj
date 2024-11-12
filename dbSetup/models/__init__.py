@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 from .tables import AllstarFull, Leagues, People, Schools, SeriesPost, Teams, Pitching, Appearances, Fielding, HallofFame
 =======
 from .tables import (
@@ -15,6 +16,9 @@ from .tables import (
     BattingPost
 )
 >>>>>>> d9ac3b9 (batting post table tested)
+=======
+from .tables import AllstarFull, HomeGames, Leagues, People, Schools, SeriesPost, Teams, Pitching, Appearances, Fielding
+>>>>>>> 6ee8472 (homegames setup!)
 
 # Import other models as needed
 
@@ -30,9 +34,13 @@ all_models = [
     Appearances,
     Fielding,
 <<<<<<< HEAD
+<<<<<<< HEAD
     HallofFame
 =======
     Batting,
     BattingPost
 >>>>>>> d9ac3b9 (batting post table tested)
+=======
+    HomeGames
+>>>>>>> 6ee8472 (homegames setup!)
 ]
