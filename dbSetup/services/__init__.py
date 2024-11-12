@@ -7,13 +7,10 @@ from .test_service import execute_tests
 from .pitching_csv_service import upload_pitching_csv
 from .appearances_csv_service import upload_appearances_csv
 from .fielding_csv_service import upload_fielding_csv
-<<<<<<< HEAD
-<<<<<<< HEAD
 from .halloffame_csv_service import upload_halloffame_csv
-=======
 from .batting_csv_service import upload_batting_csv
 from .battingpost_csv_service import upload_battingpost_csv
->>>>>>> d9ac3b9 (batting post table tested)
-=======
 from .homegames_csv_service import upload_homegames_csv
->>>>>>> 3a41811 (created parks table also bc its small and easy and i needed the foreign key)
+from .homegames_csv_service import upload_homegames_csv
+from .parks_csv_service import upload_parks_csv
+
