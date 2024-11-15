@@ -3,7 +3,11 @@
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
+<<<<<<< HEAD
     background-color: var(--mimi-pink);
+=======
+    background-color: var(--french-gray);
+>>>>>>> 0f9d042 (adding prompts with dropdown menus)
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -27,7 +31,11 @@
     width: 45%;
     display: flex;
     flex-direction: column;
+<<<<<<< HEAD
     background-color: var(--amaranth-pink);
+=======
+    background-color: var(--white-smoke-hsl);
+>>>>>>> 0f9d042 (adding prompts with dropdown menus)
     margin: auto;
     padding: 10px;
     border-radius: 8px;
@@ -36,6 +44,7 @@
 
 .searchable-dropdown {
     width: 100%;
+<<<<<<< HEAD
 }
 
 .additional-dropdowns {
@@ -89,4 +98,6 @@
 
 .submit-button:hover {
     background-color: var(--rose-pompadour)
+=======
+>>>>>>> 0f9d042 (adding prompts with dropdown menus)
 }
