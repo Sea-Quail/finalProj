@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
 from app import db
@@ -11,10 +12,14 @@ from ..filters import (
 )
 from ..models import Appearances, People, Teams
 from ..static.constants import OPTION_GROUPS, TEAM_MAPPINGS
+=======
+from flask import Blueprint, render_template
+>>>>>>> 546a4c9 (adding routes for the grid solver)
 
 grid_routes = Blueprint("grid_routes", __name__, template_folder="templates")
 
 
+<<<<<<< HEAD
 def extract_form_data():
     return {
         "prompt1": {
@@ -171,3 +176,8 @@ def get_player():
     return render_template(
         "immaculate_grid.html", team_mappings=TEAM_MAPPINGS, option_groups=OPTION_GROUPS
     )
+=======
+@grid_routes.route("/")
+def prompts():
+    return render_template("immaculate_grid.html")
+>>>>>>> 546a4c9 (adding routes for the grid solver)
