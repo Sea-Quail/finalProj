@@ -45,6 +45,9 @@
 .searchable-dropdown {
     width: 100%;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 117f0cf (Completing additional dropdowns with valid info)
 }
 
 .additional-dropdowns {
@@ -79,6 +82,7 @@
     border: 1px solid var(--french-gray);
     border-radius: 4px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+<<<<<<< HEAD
 }
 
 .submit-button {
@@ -100,4 +104,6 @@
     background-color: var(--rose-pompadour)
 =======
 >>>>>>> 0f9d042 (adding prompts with dropdown menus)
+=======
+>>>>>>> 117f0cf (Completing additional dropdowns with valid info)
 }
