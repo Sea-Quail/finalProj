@@ -4,10 +4,14 @@
     margin: 0 auto;
     padding: 20px;
 <<<<<<< HEAD
+<<<<<<< HEAD
     background-color: var(--mimi-pink);
 =======
     background-color: var(--french-gray);
 >>>>>>> 0f9d042 (adding prompts with dropdown menus)
+=======
+    background-color: var(--mimi-pink);
+>>>>>>> 529aac4 (Adding styling to the get player button)
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -32,10 +36,14 @@
     display: flex;
     flex-direction: column;
 <<<<<<< HEAD
+<<<<<<< HEAD
     background-color: var(--amaranth-pink);
 =======
     background-color: var(--white-smoke-hsl);
 >>>>>>> 0f9d042 (adding prompts with dropdown menus)
+=======
+    background-color: var(--amaranth-pink);
+>>>>>>> 529aac4 (Adding styling to the get player button)
     margin: auto;
     padding: 10px;
     border-radius: 8px;
@@ -83,6 +91,9 @@
     border-radius: 4px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 529aac4 (Adding styling to the get player button)
 }
 
 .submit-button {
@@ -102,8 +113,11 @@
 
 .submit-button:hover {
     background-color: var(--rose-pompadour)
+<<<<<<< HEAD
 =======
 >>>>>>> 0f9d042 (adding prompts with dropdown menus)
 =======
 >>>>>>> 117f0cf (Completing additional dropdowns with valid info)
+=======
+>>>>>>> 529aac4 (Adding styling to the get player button)
 }
