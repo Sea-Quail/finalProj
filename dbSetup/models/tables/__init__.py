@@ -7,8 +7,9 @@ from sqlalchemy import (
     Integer,
     SmallInteger,
     String,
+    UniqueConstraint
 )
-from sqlalchemy.orm import DeclarativeBase, Mapped, relationship, UniqueConstraint
+from sqlalchemy.orm import DeclarativeBase, Mapped, relationship
 
 class Base(DeclarativeBase):
     pass
@@ -76,7 +77,7 @@ class Teams(Base):
     teamID = Column(String(3), nullable=False)
     yearID = Column(SmallInteger, nullable=False)
     lgID = Column(String(2), ForeignKey("leagues.lgID"), nullable=True)
-    divID = Column(String(1), ForeignKey("divisions.divID") nullable=True)
+    divID = Column(String(1), ForeignKey("divisions.divID"), nullable=True)
     franchID = Column(String(3), nullable=True)
     team_name = Column(String(50), nullable=True)
     team_rank = Column(SmallInteger, nullable=True)

@@ -1,5 +1,5 @@
 import csi3335f2024 as cfg
-from models import AllstarFull, People, Fielding, Schools, Teams, Pitching, Appearances, HomeGames
+from models import *
 from utils import create_enginestr_from_values, create_session_from_str
 
 def execute_tests(tests):
