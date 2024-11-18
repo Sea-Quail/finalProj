@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
 from app import db
@@ -15,10 +16,14 @@ from ..static.constants import OPTION_GROUPS, TEAM_MAPPINGS
 =======
 from flask import Blueprint, render_template
 >>>>>>> 546a4c9 (adding routes for the grid solver)
+=======
+from flask import Blueprint, flash, redirect, render_template, request, url_for
+>>>>>>> 484ee0f (Fixing bug with dropdown menus being linked)
 
 grid_routes = Blueprint("grid_routes", __name__, template_folder="templates")
 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 def extract_form_data():
     return {
@@ -147,10 +152,13 @@ def perform_query(form_data):
     return None
 
 
+=======
+>>>>>>> 484ee0f (Fixing bug with dropdown menus being linked)
 @grid_routes.route("/", methods=["GET", "POST"])
 def get_player():
     if request.method == "POST":
         # Extract form data
+<<<<<<< HEAD
         form_data = extract_form_data()
 
         # Validate form data
@@ -179,5 +187,21 @@ def get_player():
 =======
 @grid_routes.route("/")
 def prompts():
+=======
+        prompt1 = request.form.get("prompt1")
+        prompt2 = request.form.get("prompt2")
+        operator = request.form.get("operator")
+        number = request.form.get("number")
+        team = request.form.get("team")
+        position = request.form.get("position")
+
+        # Perform necessary actions with the extracted data
+        # For example, query a database or perform calculations
+
+        # Flash a message or redirect to another page
+        flash("Form submitted successfully!", "success")
+        return redirect(url_for("grid_routes.get_player"))
+
+>>>>>>> 484ee0f (Fixing bug with dropdown menus being linked)
     return render_template("immaculate_grid.html")
 >>>>>>> 546a4c9 (adding routes for the grid solver)
