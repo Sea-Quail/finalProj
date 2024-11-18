@@ -16,7 +16,7 @@ def home():
     return render_template(
         "home.html",
         title="Home",
-        message="SQL more like sea quail amiright?",
+        message="SQL more like sea quail amirite?",
     )
 
 
