@@ -388,7 +388,7 @@ class Fielding(Base):
     f_CS = Column(SmallInteger, nullable=True)
     f_ZR = Column(SmallInteger, nullable=True)
 
-<<<<<<< HEAD
+
 #Alter database to where note attribute is of length 101
 class HallofFame(Base):
     __tablename__ = "halloffame"
