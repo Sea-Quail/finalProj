@@ -25,6 +25,9 @@ grid_routes = Blueprint("grid_routes", __name__, template_folder="templates")
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a1ea04f (Adding logic to remember form fields when invalid input occurs)
 def extract_form_data():
     return {
         "prompt1": {
@@ -52,11 +55,35 @@ def validate_form_data(form_data):
         errors.append("Prompt 2 is required.")
 
     # Check additional fields for prompt1
+<<<<<<< HEAD
     if (
         form_data["prompt1"]["prompt1-option"] in OPTION_GROUPS["Career Options"].keys()
         or form_data["prompt1"]["prompt1-option"]
         in OPTION_GROUPS["Season Options"].keys()
     ):
+=======
+    if form_data["prompt1"]["prompt1-option"] in [
+        "avg_career",
+        "era_career",
+        "wins_career",
+        "k_career",
+        "hits_career",
+        "hr_career",
+        "save_career",
+        "war_career",
+        "avg_season",
+        "era_season",
+        "hr_season",
+        "win_season",
+        "rbi_season",
+        "run_season",
+        "hits_season",
+        "k_season",
+        "hr_sb_season",
+        "save_season",
+        "war_season",
+    ]:
+>>>>>>> a1ea04f (Adding logic to remember form fields when invalid input occurs)
         if not form_data["prompt1"]["prompt1-operator"]:
             errors.append("Operator for Prompt 1 is required.")
         if not form_data["prompt1"]["prompt1-number"]:
@@ -68,11 +95,35 @@ def validate_form_data(form_data):
         errors.append("Team for Prompt 1 is required.")
 
     # Check additional fields for prompt2
+<<<<<<< HEAD
     if (
         form_data["prompt2"]["prompt2-option"] in OPTION_GROUPS["Career Options"].keys()
         or form_data["prompt2"]["prompt2-option"]
         in OPTION_GROUPS["Season Options"].keys()
     ):
+=======
+    if form_data["prompt2"]["prompt2-option"] in [
+        "avg_career",
+        "era_career",
+        "wins_career",
+        "k_career",
+        "hits_career",
+        "hr_career",
+        "save_career",
+        "war_career",
+        "avg_season",
+        "era_season",
+        "hr_season",
+        "win_season",
+        "rbi_season",
+        "run_season",
+        "hits_season",
+        "k_season",
+        "hr_sb_season",
+        "save_season",
+        "war_season",
+    ]:
+>>>>>>> a1ea04f (Adding logic to remember form fields when invalid input occurs)
         if not form_data["prompt2"]["prompt2-operator"]:
             errors.append("Operator for Prompt 2 is required.")
         if not form_data["prompt2"]["prompt2-number"]:
@@ -86,6 +137,7 @@ def validate_form_data(form_data):
     return errors
 
 
+<<<<<<< HEAD
 # Returns an array of two dictionaries, one for each prompt
 def parse_prompts(form_data):
     params = []
@@ -154,11 +206,16 @@ def perform_query(form_data):
 
 =======
 >>>>>>> 484ee0f (Fixing bug with dropdown menus being linked)
+=======
+>>>>>>> a1ea04f (Adding logic to remember form fields when invalid input occurs)
 @grid_routes.route("/", methods=["GET", "POST"])
 def get_player():
     if request.method == "POST":
         # Extract form data
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a1ea04f (Adding logic to remember form fields when invalid input occurs)
         form_data = extract_form_data()
 
         # Validate form data
@@ -168,6 +225,7 @@ def get_player():
                 flash(error, "error")
 
             flash(form_data, "info")
+<<<<<<< HEAD
             return render_template(
                 "immaculate_grid.html",
                 team_mappings=TEAM_MAPPINGS,
@@ -194,6 +252,9 @@ def prompts():
         number = request.form.get("number")
         team = request.form.get("team")
         position = request.form.get("position")
+=======
+            return render_template("immaculate_grid.html", form_data=form_data)
+>>>>>>> a1ea04f (Adding logic to remember form fields when invalid input occurs)
 
         # Perform necessary actions with the extracted data
         # For example, query a database or perform calculations
