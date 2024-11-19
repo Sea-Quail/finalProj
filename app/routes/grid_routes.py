@@ -1,7 +1,10 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 from flask import Blueprint, flash, redirect, render_template, request, url_for
-from models import People
+
+from app import db
+
+from ..models import People
 
 from app import db
 
@@ -171,6 +174,7 @@ def validate_form_data(form_data):
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Returns an array of two dictionaries, one for each prompt
 def parse_prompts(form_data):
     params = []
@@ -247,6 +251,27 @@ def perform_query(form_data):
 
 
 >>>>>>> f0fd25d (Creating initial filter structure and some refactoring)
+=======
+def parse_prompts(form_data, params):
+    return
+
+
+def perform_query(form_data):
+    # Get base query
+    query = db.session.query(People)
+
+    # Extract parameters from the form data
+    params = []
+    parse_prompts(form_data, params)
+
+    result = query.first()
+
+    name = f"{result[13]} {result[14]}"
+
+    return name
+
+
+>>>>>>> 361e2af (adding a test query and transfering tables from dbsetup to prod)
 @grid_routes.route("/", methods=["GET", "POST"])
 def get_player():
     if request.method == "POST":
@@ -297,9 +322,10 @@ def prompts():
 
         # Perform necessary actions with the extracted data
         # For example, query a database or perform calculations
+        name = perform_query(form_data)
 
         # Flash a message or redirect to another page
-        flash("Form submitted successfully!", "success")
+        flash(name, "info")
         return redirect(url_for("grid_routes.get_player"))
 
 >>>>>>> 484ee0f (Fixing bug with dropdown menus being linked)
