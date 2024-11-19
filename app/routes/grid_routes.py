@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 from flask import Blueprint, flash, redirect, render_template, request, url_for
+from models import People
 
 from app import db
 
@@ -45,6 +46,29 @@ def extract_form_data():
     }
 
 
+career_and_season_options = [
+    "avg_career",
+    "era_career",
+    "wins_career",
+    "k_career",
+    "hits_career",
+    "hr_career",
+    "save_career",
+    "war_career",
+    "avg_season",
+    "era_season",
+    "hr_season",
+    "win_season",
+    "rbi_season",
+    "run_season",
+    "hits_season",
+    "k_season",
+    "hr_sb_season",
+    "save_season",
+    "war_season",
+]
+
+
 def validate_form_data(form_data):
     errors = []
 
@@ -55,6 +79,7 @@ def validate_form_data(form_data):
         errors.append("Prompt 2 is required.")
 
     # Check additional fields for prompt1
+<<<<<<< HEAD
 <<<<<<< HEAD
     if (
         form_data["prompt1"]["prompt1-option"] in OPTION_GROUPS["Career Options"].keys()
@@ -84,6 +109,9 @@ def validate_form_data(form_data):
         "war_season",
     ]:
 >>>>>>> a1ea04f (Adding logic to remember form fields when invalid input occurs)
+=======
+    if form_data["prompt1"]["prompt1-option"] in career_and_season_options:
+>>>>>>> f0fd25d (Creating initial filter structure and some refactoring)
         if not form_data["prompt1"]["prompt1-operator"]:
             errors.append("Operator for Prompt 1 is required.")
         if not form_data["prompt1"]["prompt1-number"]:
@@ -95,6 +123,7 @@ def validate_form_data(form_data):
         errors.append("Team for Prompt 1 is required.")
 
     # Check additional fields for prompt2
+<<<<<<< HEAD
 <<<<<<< HEAD
     if (
         form_data["prompt2"]["prompt2-option"] in OPTION_GROUPS["Career Options"].keys()
@@ -124,6 +153,9 @@ def validate_form_data(form_data):
         "war_season",
     ]:
 >>>>>>> a1ea04f (Adding logic to remember form fields when invalid input occurs)
+=======
+    if form_data["prompt2"]["prompt2-option"] in career_and_season_options:
+>>>>>>> f0fd25d (Creating initial filter structure and some refactoring)
         if not form_data["prompt2"]["prompt2-operator"]:
             errors.append("Operator for Prompt 2 is required.")
         if not form_data["prompt2"]["prompt2-number"]:
@@ -137,6 +169,7 @@ def validate_form_data(form_data):
     return errors
 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 # Returns an array of two dictionaries, one for each prompt
 def parse_prompts(form_data):
@@ -208,6 +241,12 @@ def perform_query(form_data):
 >>>>>>> 484ee0f (Fixing bug with dropdown menus being linked)
 =======
 >>>>>>> a1ea04f (Adding logic to remember form fields when invalid input occurs)
+=======
+def perform_query(form_data):
+    return
+
+
+>>>>>>> f0fd25d (Creating initial filter structure and some refactoring)
 @grid_routes.route("/", methods=["GET", "POST"])
 def get_player():
     if request.method == "POST":
