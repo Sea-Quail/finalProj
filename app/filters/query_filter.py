@@ -3,10 +3,15 @@ from abc import ABC, abstractmethod
 from sqlalchemy.orm import Query
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 from ..models import Appearances, People, Pitching
 
 =======
 >>>>>>> f0fd25d (Creating initial filter structure and some refactoring)
+=======
+from ..models import Appearances, People, Pitching
+
+>>>>>>> 33d1249 (query filters)
 
 class QueryFilter(ABC):
     """
@@ -29,6 +34,9 @@ class QueryFilter(ABC):
         """
         pass
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 33d1249 (query filters)
 
 
 class TeamFilter(QueryFilter):
@@ -148,5 +156,8 @@ class MiscFilter(QueryFilter):
             self.query = self.query.filter(People.world_series_champ == True)
 
         return self.query
+<<<<<<< HEAD
 =======
 >>>>>>> f0fd25d (Creating initial filter structure and some refactoring)
+=======
+>>>>>>> 33d1249 (query filters)
