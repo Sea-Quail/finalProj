@@ -274,3 +274,5 @@ class Fielding(Base):
     f_SB = Column(SmallInteger, nullable=True)
     f_CS = Column(SmallInteger, nullable=True)
     f_ZR = Column(SmallInteger, nullable=True)
+
+class HallofFame(Base):

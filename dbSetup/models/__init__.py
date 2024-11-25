@@ -1,4 +1,4 @@
-from .tables import AllstarFull, Leagues, People, Schools, SeriesPost, Teams, Pitching, Appearances, Fielding
+from .tables import AllstarFull, Leagues, People, Schools, SeriesPost, Teams, Pitching, Appearances, Fielding, HallofFame
 
 # Import other models as needed
 
