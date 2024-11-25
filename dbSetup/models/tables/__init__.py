@@ -275,4 +275,21 @@ class Fielding(Base):
     f_CS = Column(SmallInteger, nullable=True)
     f_ZR = Column(SmallInteger, nullable=True)
 
+#Alter database to where note attribute is of length 101
 class HallofFame(Base):
+    __tablename__ = "halloffame"
+    halloffame_ID = Column(Integer, primary_key=True, nullable=False)
+    playerID = Column(String(9), ForeignKey("people.playerID"), nullable=False)
+    yearID = Column(SmallInteger, nullable=False)
+    votedBy = Column(String(64), nullable=False)
+    ballots = Column(SmallInteger, nullable=True)
+    needed = Column(SmallInteger, nullable=True)
+    votes = Column(SmallInteger, nullable=True)
+    inducted = Column(String(1), nullable=True)
+    category = Column(String(20), nullable=True)
+    note = Column(String(255), nullable=True)
+
+
+
+
+

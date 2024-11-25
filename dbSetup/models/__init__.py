@@ -13,4 +13,5 @@ all_models = [
     Pitching,
     Appearances,
     Fielding,
+    HallofFame
 ]
