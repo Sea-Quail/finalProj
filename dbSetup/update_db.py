@@ -44,20 +44,28 @@ def wrapper(result_queue, func, args, kwargs):
     result_queue.put((result, f.getvalue()))
 
 
-def run_with_timeout(func, args=(), kwargs={}, timeout=10):
+def run_function(func, args=(), kwargs={}):
     """
+<<<<<<< HEAD
     Runs a function with a timeout.
 >>>>>>> 152d9ef (implementing multiprocessing to speed things up)
+=======
+    Runs a function and captures its output.
+>>>>>>> 4f8876e (removing separate ci stuff, it wasn't much faster besides the appearances table)
 
     :param func: The function to execute.
     :param args: Positional arguments for the function.
     :param kwargs: Keyword arguments for the function.
+<<<<<<< HEAD
 <<<<<<< HEAD
     :return: A tuple containing the result of the function and its output.
 =======
     :param timeout: Timeout in seconds.
     :return: The result of the function or None if it times out.
 >>>>>>> 152d9ef (implementing multiprocessing to speed things up)
+=======
+    :return: A tuple containing the result of the function and its output.
+>>>>>>> 4f8876e (removing separate ci stuff, it wasn't much faster besides the appearances table)
     """
     result_queue = multiprocessing.Queue()
 
@@ -65,6 +73,7 @@ def run_with_timeout(func, args=(), kwargs={}, timeout=10):
         target=wrapper, args=(result_queue, func, args, kwargs)
     )
     process.start()
+<<<<<<< HEAD
 <<<<<<< HEAD
     process.join()
 
@@ -94,6 +103,12 @@ def run_with_timeout(func, args=(), kwargs={}, timeout=10):
         # If completed, retrieve the result
         return result_queue.get()
 >>>>>>> 152d9ef (implementing multiprocessing to speed things up)
+=======
+    process.join()
+
+    # If completed, retrieve the result and output
+    return result_queue.get()
+>>>>>>> 4f8876e (removing separate ci stuff, it wasn't much faster besides the appearances table)
 
 
 def get_all_service_functions():
@@ -114,6 +129,7 @@ def update_table(table):
     if hasattr(services, func_name):
         func = getattr(services, func_name)
 <<<<<<< HEAD
+<<<<<<< HEAD
         result, output = run_function(func)  # Call the function and capture output
         print(output)
 =======
@@ -123,6 +139,10 @@ def update_table(table):
             func()  # Call function
         print(f.getvalue())
 >>>>>>> 152d9ef (implementing multiprocessing to speed things up)
+=======
+        result, output = run_function(func)  # Call the function and capture output
+        print(output)
+>>>>>>> 4f8876e (removing separate ci stuff, it wasn't much faster besides the appearances table)
     else:
         print(f"Unknown table: {table}")
 
@@ -162,7 +182,7 @@ def update_tables(tables, isCI):
 >>>>>>> 36231da (Sneaking in CI update to only update each for about 10 seconds)
 =======
     for table in tables:
-        p = multiprocessing.Process(target=update_table, args=(table))
+        p = multiprocessing.Process(target=update_table, args=(table,))
         p.start()
         processes.append(p)
 
