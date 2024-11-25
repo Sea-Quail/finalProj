@@ -243,6 +243,17 @@ class AllstarFull(Base):
     GP = Column(SmallInteger)
     startingPos = Column(SmallInteger)
 
+    __table_args__ = (
+        UniqueConstraint(
+            "allstarfull_ID",
+            "playerID",
+            "lgID",
+            "teamID",
+            "yearID",
+            name="uq_allstarfull",
+        ),
+    )
+
     # Define relationships
     league = relationship("Leagues", back_populates="allstarfull_entries")
     player = relationship("People", back_populates="allstarfull_entries")
