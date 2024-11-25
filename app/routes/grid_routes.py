@@ -34,31 +34,6 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 
 grid_routes = Blueprint("grid_routes", __name__, template_folder="templates")
 
-career_options = [
-    "avg_career",
-    "era_career",
-    "wins_career",
-    "k_career",
-    "hits_career",
-    "hr_career",
-    "save_career",
-    "war_career",
-]
-
-season_options = [
-    "avg_season",
-    "era_season",
-    "hr_season",
-    "win_season",
-    "rbi_season",
-    "run_season",
-    "hits_season",
-    "k_season",
-    "hr_sb_season",
-    "save_season",
-    "war_season",
-]
-
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -128,8 +103,9 @@ def validate_form_data(form_data):
 >>>>>>> f0fd25d (Creating initial filter structure and some refactoring)
 =======
     if (
-        form_data["prompt1"]["prompt1-option"] in career_options
-        or form_data["prompt1"]["prompt1-option"] in season_options
+        form_data["prompt1"]["prompt1-option"] in OPTION_GROUPS["Career Options"].keys()
+        or form_data["prompt1"]["prompt1-option"]
+        in OPTION_GROUPS["Season Options"].keys()
     ):
 >>>>>>> 33d1249 (query filters)
         if not form_data["prompt1"]["prompt1-operator"]:
@@ -179,8 +155,9 @@ def validate_form_data(form_data):
 >>>>>>> f0fd25d (Creating initial filter structure and some refactoring)
 =======
     if (
-        form_data["prompt2"]["prompt2-option"] in career_options
-        or form_data["prompt2"]["prompt2-option"] in season_options
+        form_data["prompt2"]["prompt2-option"] in OPTION_GROUPS["Career Options"].keys()
+        or form_data["prompt2"]["prompt2-option"]
+        in OPTION_GROUPS["Season Options"].keys()
     ):
 >>>>>>> 33d1249 (query filters)
         if not form_data["prompt2"]["prompt2-operator"]:
@@ -302,11 +279,11 @@ def perform_query(form_data):
         number = param["number"]
         team = param["team"]
 
-        if option in career_options:
+        if option in OPTION_GROUPS["Career Options"].keys():
             query = CareerStatFilter(
                 query, option, operator, float(number), team
             ).apply()
-        elif option in season_options:
+        elif option in OPTION_GROUPS["Season Options"].keys():
             query = SeasonStatFilter(
                 query, option, operator, float(number), team
             ).apply()
