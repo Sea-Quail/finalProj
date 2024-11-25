@@ -15,13 +15,13 @@ def upload_halloffame_csv():
 
     # Process the CSV file
     try:
-        print(update_fielding_from_csv(csv_file_path))
+        print(update_halloffame_from_csv(csv_file_path))
         print("File processed successfully")
     except Exception as e:
         print(f"Error: {str(e)}")
 
 
-def update_fielding_from_csv(file_path):
+def update_halloffame_from_csv(file_path):
     with open(file_path, newline="") as csvfile:
         reader = csv.DictReader(csvfile)
         new_rows = 0
