@@ -1,10 +1,20 @@
 import argparse
 import inspect
+<<<<<<< HEAD
 import io
 import multiprocessing
 from contextlib import redirect_stderr, redirect_stdout
 
 import services
+=======
+import signal
+
+import services
+
+
+def timeout_handler(signum, frame):
+    raise TimeoutError("Function call timed out")
+>>>>>>> 36231da (Sneaking in CI update to only update each for about 10 seconds)
 
 
 def wrapper(result_queue, func, args, kwargs):
@@ -32,8 +42,21 @@ def run_function(func, args=(), kwargs={}):
     process.start()
     process.join()
 
+<<<<<<< HEAD
     # If completed, retrieve the result and output
     return result_queue.get()
+=======
+    # If no tables are specified, call all functions in services
+    tables_to_update = (
+        args.tables
+        if (args.tables and args.tables != ["ci"])
+        else get_all_service_functions()
+    )
+    isCI = True if args.tables == "test" else False
+
+    # Execute updates
+    update_tables(tables_to_update, isCI)
+>>>>>>> 36231da (Sneaking in CI update to only update each for about 10 seconds)
 
 
 def get_all_service_functions():
@@ -45,6 +68,7 @@ def get_all_service_functions():
     ]
 
 
+<<<<<<< HEAD
 def update_table(table):
     func_name = f"upload_{table}_csv"
     if hasattr(services, func_name):
@@ -67,6 +91,26 @@ def update_tables(tables):
 
     for p in processes:
         p.join()
+=======
+def update_tables(tables, isCI):
+    for table in tables:
+        func_name = f"upload_{table}_csv"
+        if hasattr(services, func_name):
+            func = getattr(services, func_name)
+            if isCI:
+                signal.signal(signal.SIGALRM, timeout_handler)
+                signal.alarm(10)
+                try:
+                    func()  # Call function in test mode
+                except TimeoutError:
+                    print(f"Update for table {table} timed out")
+                finally:
+                    signal.alarm(0)  # Disable the alarm
+            else:
+                func()  # Call function normally
+        else:
+            print(f"Unknown table: {table}")
+>>>>>>> 36231da (Sneaking in CI update to only update each for about 10 seconds)
 
 
 if __name__ == "__main__":
