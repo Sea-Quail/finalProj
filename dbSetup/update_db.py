@@ -1,6 +1,7 @@
 import argparse
 import inspect
 <<<<<<< HEAD
+<<<<<<< HEAD
 import io
 import multiprocessing
 from contextlib import redirect_stderr, redirect_stdout
@@ -8,10 +9,16 @@ from contextlib import redirect_stderr, redirect_stdout
 import services
 =======
 import signal
+=======
+import io
+import multiprocessing
+from contextlib import redirect_stderr, redirect_stdout
+>>>>>>> 152d9ef (implementing multiprocessing to speed things up)
 
 import services
 
 
+<<<<<<< HEAD
 def timeout_handler(signum, frame):
     raise TimeoutError("Function call timed out")
 >>>>>>> 36231da (Sneaking in CI update to only update each for about 10 seconds)
@@ -28,11 +35,29 @@ def wrapper(result_queue, func, args, kwargs):
 def run_function(func, args=(), kwargs={}):
     """
     Runs a function and captures its output.
+=======
+def wrapper(result_queue, func, args, kwargs):
+    """Wrapper function to call the target function and put the result in a queue."""
+    f = io.StringIO()
+    with redirect_stdout(f), redirect_stderr(f):
+        result = func(*args, **kwargs)
+    result_queue.put((result, f.getvalue()))
+
+
+def run_with_timeout(func, args=(), kwargs={}, timeout=10):
+    """
+    Runs a function with a timeout.
+>>>>>>> 152d9ef (implementing multiprocessing to speed things up)
 
     :param func: The function to execute.
     :param args: Positional arguments for the function.
     :param kwargs: Keyword arguments for the function.
+<<<<<<< HEAD
     :return: A tuple containing the result of the function and its output.
+=======
+    :param timeout: Timeout in seconds.
+    :return: The result of the function or None if it times out.
+>>>>>>> 152d9ef (implementing multiprocessing to speed things up)
     """
     result_queue = multiprocessing.Queue()
 
@@ -40,6 +65,7 @@ def run_function(func, args=(), kwargs={}):
         target=wrapper, args=(result_queue, func, args, kwargs)
     )
     process.start()
+<<<<<<< HEAD
     process.join()
 
 <<<<<<< HEAD
@@ -57,6 +83,17 @@ def run_function(func, args=(), kwargs={}):
     # Execute updates
     update_tables(tables_to_update, isCI)
 >>>>>>> 36231da (Sneaking in CI update to only update each for about 10 seconds)
+=======
+    process.join(timeout)
+
+    if process.is_alive():
+        process.terminate()
+        process.join()
+        return (None,)  # Functions have no return value
+    else:
+        # If completed, retrieve the result
+        return result_queue.get()
+>>>>>>> 152d9ef (implementing multiprocessing to speed things up)
 
 
 def get_all_service_functions():
@@ -69,12 +106,23 @@ def get_all_service_functions():
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 152d9ef (implementing multiprocessing to speed things up)
 def update_table(table):
     func_name = f"upload_{table}_csv"
     if hasattr(services, func_name):
         func = getattr(services, func_name)
+<<<<<<< HEAD
         result, output = run_function(func)  # Call the function and capture output
         print(output)
+=======
+
+        f = io.StringIO()
+        with redirect_stdout(f), redirect_stderr(f):
+            func()  # Call function
+        print(f.getvalue())
+>>>>>>> 152d9ef (implementing multiprocessing to speed things up)
     else:
         print(f"Unknown table: {table}")
 
@@ -84,6 +132,7 @@ def update_tables(tables):
         tables = get_all_service_functions()
 
     processes = []
+<<<<<<< HEAD
     for table in tables:
         p = multiprocessing.Process(target=update_table, args=(table,))
         p.start()
@@ -111,6 +160,15 @@ def update_tables(tables, isCI):
         else:
             print(f"Unknown table: {table}")
 >>>>>>> 36231da (Sneaking in CI update to only update each for about 10 seconds)
+=======
+    for table in tables:
+        p = multiprocessing.Process(target=update_table, args=(table))
+        p.start()
+        processes.append(p)
+
+    for p in processes:
+        p.join()
+>>>>>>> 152d9ef (implementing multiprocessing to speed things up)
 
 
 if __name__ == "__main__":
