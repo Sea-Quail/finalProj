@@ -12,6 +12,7 @@ from ..filters import (
     TeamFilter,
 )
 from ..models import Appearances, People, Teams
+from ..static.constants import OPTION_GROUPS, TEAM_MAPPINGS
 
 from app import db
 
@@ -344,6 +345,9 @@ def get_player():
 
             flash(form_data, "info")
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 736ea61 (major refactoring)
             return render_template(
                 "immaculate_grid.html",
                 team_mappings=TEAM_MAPPINGS,
@@ -360,6 +364,7 @@ def get_player():
     return render_template(
         "immaculate_grid.html", team_mappings=TEAM_MAPPINGS, option_groups=OPTION_GROUPS
     )
+<<<<<<< HEAD
 =======
 @grid_routes.route("/")
 def prompts():
@@ -383,3 +388,5 @@ def prompts():
 >>>>>>> 484ee0f (Fixing bug with dropdown menus being linked)
     return render_template("immaculate_grid.html")
 >>>>>>> 546a4c9 (adding routes for the grid solver)
+=======
+>>>>>>> 736ea61 (major refactoring)
