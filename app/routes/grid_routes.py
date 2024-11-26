@@ -9,7 +9,7 @@ from ..filters import (
     SeasonStatFilter,
     TeamFilter,
 )
-from ..models import Appearances, People, Teams
+from dbSetup.models.tables import Appearances, People, Teams
 from ..static.constants import OPTION_GROUPS, TEAM_MAPPINGS
 
 grid_routes = Blueprint("grid_routes", __name__, template_folder="templates")

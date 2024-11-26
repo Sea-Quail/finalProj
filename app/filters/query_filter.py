@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 from sqlalchemy.orm import Query
 
-from ..models import Appearances, People, Pitching
+from dbSetup.models.tables import Appearances, People, Pitching
 
 
 class QueryFilter(ABC):

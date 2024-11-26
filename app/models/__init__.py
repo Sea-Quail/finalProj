@@ -1,14 +1,4 @@
-from .tables import (
-    AllstarFull,
-    Appearances,
-    Fielding,
-    Leagues,
-    People,
-    Pitching,
-    Schools,
-    SeriesPost,
-    Teams,
-)
+from dbSetup.models.tables import *
 from .user import User
 
 # Import other models as needed
