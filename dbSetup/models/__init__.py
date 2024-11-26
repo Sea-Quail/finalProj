@@ -4,15 +4,15 @@ from .tables import *
 # For easy access to all models
 all_models = [
     AllstarFull,
-    People,
-    Leagues,
-    Teams,
-    Schools,
-    SeriesPost,
-    Pitching,
     Appearances,
+    Divisions,
     Fielding,
     HomeGames,
+    Leagues,
+    Pitching,
     Parks,
-    Divisions
+    People,
+    SeriesPost,
+    Schools,
+    Teams,
 ]

@@ -6,9 +6,16 @@ from .user import User
 # For easy access to all models
 all_models = [
     AllstarFull,
-    People,
-    Leagues,
-    User,
     Appearances,
+    Divisions,
+    Fielding,
+    HomeGames,
+    Leagues,
+    Pitching,
+    Parks,
+    People,
+    SeriesPost,
+    Schools,
     Teams,
+    User,
 ]
