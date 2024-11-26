@@ -1,9 +1,19 @@
 import csi3335f2024 as cfg
-<<<<<<< HEAD
-from models import AllstarFull, Appearances, Fielding, People, Pitching, Schools, Teams
-=======
+
+
 from models import AllstarFull, People, Fielding, Schools, Teams, Pitching, Appearances, HomeGames
->>>>>>> 6ee8472 (homegames setup!)
+
+from models import (
+    AllstarFull,
+    Appearances,
+    Fielding,
+    HomeGames,
+    People,
+    Pitching,
+    Schools,
+    Teams,
+)
+
 from utils import create_enginestr_from_values, create_session_from_str
 
 
@@ -508,15 +518,15 @@ def compare_existing_homegames_entries():
         row_exists = (
             sq_session.query(HomeGames)
             .filter_by(
-                homegames_ID = row.homegames_ID,
-                teamID = row.teamID ,
-                parkID = row.parkID,
-                yearID = row.yearID,
-                firstGame = row.firstGame, 
-                lastGame = row.lastGame,
-                games = row.games,
-                openings = row.openings,
-                attendance = row.attendance, 
+                homegames_ID=row.homegames_ID,
+                teamID=row.teamID,
+                parkID=row.parkID,
+                yearID=row.yearID,
+                firstGame=row.firstGame,
+                lastGame=row.lastGame,
+                games=row.games,
+                openings=row.openings,
+                attendance=row.attendance,
             )
             .first()
         )
