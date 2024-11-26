@@ -4,7 +4,6 @@ from .tables import *
 # For easy access to all models
 all_models = [
     AllstarFull,
-    PitchingPost,
     Appearances,
     Divisions,
     Fielding,
@@ -12,6 +11,7 @@ all_models = [
     HomeGames,
     Leagues,
     Pitching,
+    PitchingPost,
     Parks,
     People,
     SeriesPost,
