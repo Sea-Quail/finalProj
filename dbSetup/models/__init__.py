@@ -7,6 +7,8 @@ all_models = [
     Appearances,
     Divisions,
     Fielding,
+    Batting,
+    BattingPost,
     FieldingPost,
     HomeGames,
     Leagues,
@@ -16,5 +18,5 @@ all_models = [
     People,
     SeriesPost,
     Schools,
-    Teams,
+    Teams,,
 ]
