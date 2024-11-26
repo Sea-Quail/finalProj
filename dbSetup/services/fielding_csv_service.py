@@ -69,30 +69,12 @@ def update_fielding_from_csv(file_path):
                 #if we make an error log, a message could go here.
                 continue
 
-            # Check if a row with the same playerID, yearID, teamID, and stint exists
-            existing_entry = (
-                session.query(Fielding)
-                .filter_by(
-                    playerID=fielding_record.playerID,
-                    yearID=fielding_record.yearID,
-                    teamID=fielding_record.teamID,
-                    stint=fielding_record.stint,
-                )
-                .first()
-            )
-            if existing_entry:
-                skipCount+=1
-                #if we make an error log, message can go here
-                continue
-            
-            else:
-                # Insert a new record
-                session.add(fielding_record)
-                new_rows += 1
+            session.merge(fielding_record)
+            new_rows += 1
 
             session.commit()
 
     session.close()
-    return {"new_rows": new_rows, "rows skipped bc already exist: ": skipCount,
+    return {"updated rows": new_rows, 
             "rows skipped bc their playerid didn't exist in people table: ": peopleNotExist, 
             "rows skipped bc their teamid didnt exist in teams table: ": teamNotExist}

@@ -27,7 +27,6 @@ def update_pitching_from_csv(file_path):
         new_rows = 0
         peopleNotExist=0
         teamNotExists=0
-        skipCount=0
 
         # Create session
         session = create_session_from_str(create_enginestr_from_values(mysql=cfg.mysql))
@@ -81,29 +80,11 @@ def update_pitching_from_csv(file_path):
                 #if we make an error log, a message could go here.
                 continue
 
-            # Check if a row with the same playerID, yearID, teamID, and stint exists
-            existing_entry = (
-                session.query(Pitching)
-                .filter_by(
-                    playerID=pitching_record.playerID,
-                    yearID=pitching_record.yearID,
-                    teamID=pitching_record.teamID,
-                    stint=pitching_record.stint,
-                )
-                .first()
-            )
-
-            if existing_entry:
-                skipCount+=1
-                #if we make error log, message can go here
-                continue
-            else:
-                # Insert a new record
-                session.add(pitching_record)
-                new_rows += 1
+            session.merge(pitching_record)
+            new_rows += 1
 
             session.commit()
     session.close()
-    return {"new_rows": new_rows, "rows skipped bc already existed: ": skipCount,
+    return {"updated rows": new_rows, 
             "rows skipped bc their playerid didn't exist in people table: ": peopleNotExist, 
             "rows skipped bc their teamid didnt exist in teams table: ": teamNotExists}
