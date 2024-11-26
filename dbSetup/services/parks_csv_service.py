@@ -25,6 +25,7 @@ def update_parks_from_csv(file_path):
     with open(file_path, newline="") as csvfile:
         reader = csv.DictReader(csvfile)
         new_rows = 0
+        batch_counter =0
 
         # Create session
         session = create_session_from_str(create_enginestr_from_values(mysql=cfg.mysql))
@@ -41,8 +42,14 @@ def update_parks_from_csv(file_path):
 
             session.merge(parks_record)
             new_rows += 1
+            batch_counter += 1
 
-            session.commit()
+            # Commit in batches
+            if batch_counter >= 500:
+                session.commit()
+                batch_counter = 0
 
-    session.close()
+        # Final commit for remaining records
+        session.commit()
+        session.close()
     return {"updated rows": new_rows}

@@ -18,5 +18,5 @@ all_models = [
     People,
     SeriesPost,
     Schools,
-    Teams,,
+    Teams,
 ]

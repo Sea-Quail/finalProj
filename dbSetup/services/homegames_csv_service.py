@@ -27,6 +27,7 @@ def update_homegames_from_csv(file_path):
         new_rows = 0
         parksNotExist=0
         teamNotExist=0
+        batch_counter = 0
 
         # Create session
         session = create_session_from_str(create_enginestr_from_values(mysql=cfg.mysql))
@@ -63,10 +64,17 @@ def update_homegames_from_csv(file_path):
 
             session.merge(homegames_record)
             new_rows += 1
+            batch_counter += 1
 
-            session.commit()
+            # Commit in batches
+            if batch_counter >= 500:
+                session.commit()
+                batch_counter = 0
 
-    session.close()
+        # Final commit for remaining records
+        session.commit()
+        session.close()
+        
     return {"updated rows": new_rows,
             "rows skipped bc their parkid didn't exist in parks table: ": parksNotExist, 
             "rows skipped bc their teamid didnt exist in teams table: ": teamNotExist}

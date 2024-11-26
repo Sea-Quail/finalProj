@@ -27,6 +27,7 @@ def update_appearances_from_csv(file_path):
         new_rows = 0
         peopleNotExist = 0
         teamNotExists = 0
+        batch_counter = 0
 
         # Create session
         session = create_session_from_str(create_enginestr_from_values(mysql=cfg.mysql))
@@ -79,10 +80,16 @@ def update_appearances_from_csv(file_path):
 
             session.merge(appearances_record)
             new_rows += 1
+            batch_counter += 1
 
-            session.commit()
-
-    session.close()
+            # Commit in batches
+            if batch_counter >= 500:
+                session.commit()
+                batch_counter = 0
+    
+        # Final commit for remaining records
+        session.commit()
+        session.close()
     return {
         "updated rows": new_rows,
         "rows skipped bc their playerid didn't exist in people table: ": peopleNotExist,
