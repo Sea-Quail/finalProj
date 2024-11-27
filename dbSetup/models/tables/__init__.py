@@ -520,7 +520,7 @@ class HallofFame(Base):
     votes = Column(SmallInteger, nullable=True)
     inducted = Column(String(1), nullable=True)
     category = Column(String(20), nullable=True)
-    note = Column(String(255), nullable=True)
+    note = Column(String(25), nullable=True)
 
 class FieldingPost(Base):
     __tablename__ = "fieldingpost"

@@ -29,4 +29,5 @@ all_models = [
     Parks,
     FieldingPost,
     Teams,
+    HallofFame,
 ]

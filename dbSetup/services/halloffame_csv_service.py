@@ -25,9 +25,9 @@ def update_halloffame_from_csv(file_path):
     with open(file_path, newline="") as csvfile:
         reader = csv.DictReader(csvfile)
         new_rows = 0
+        updated_rows = 0
         peopleNotExist=0
         teamNotExist=0
-        skipCount=0
 
         # Create session
         session = create_session_from_str(create_enginestr_from_values(mysql=cfg.mysql))
@@ -42,7 +42,7 @@ def update_halloffame_from_csv(file_path):
                 votes = int(row["votes"]) if row["votes"].isdigit() else None,
                 inducted = row["inducted"] if row["inducted"] else None,
                 category = row["category"] if row["category"] else None,
-                note = row["needed_note"] if row["needed_note"] else None,
+                note = row["needed_note"][:25] if row["needed_note"] else None,
             )
 
             # Check if playerID exists in the people table
@@ -63,18 +63,17 @@ def update_halloffame_from_csv(file_path):
                 .first()
             )
             if existing_entry:
-                skipCount+=1
-                #if we make an error log, message can go here
-                continue
+                updated_rows += 1
             
             else:
-                # Insert a new record
-                session.add(halloffame_record)
                 new_rows += 1
 
-            session.commit()
-
+            session.merge(halloffame_record)
+        session.commit()
     session.close()
-    return {"new_rows": new_rows, "rows skipped bc already exist: ": skipCount,
-            "rows skipped bc their playerid didn't exist in people table: ": peopleNotExist, 
-            "rows skipped bc their teamid didnt exist in teams table: ": teamNotExist}
+    return {
+        "new_rows: ": new_rows,
+        "updated_rows: ": updated_rows,
+        "rows skipped bc their playerid didn't exist in people table: ": peopleNotExist, 
+        "rows skipped bc their teamid didnt exist in teams table: ": teamNotExist
+    }
