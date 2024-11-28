@@ -1,7 +1,5 @@
 {% extends "base.html" %}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 {% from "_macros.html" import prompt %}
 
 {% block content %}
@@ -16,25 +14,3 @@
     </form>
 </div>
 {% endblock %}
-=======
-{% block content %}
-<h1>Immaculate Grid Solver</h1>
-
-{% endblock %}
->>>>>>> 546a4c9 (adding routes for the grid solver)
-=======
-{% from "_macros.html" import prompt %}
-
-{% block content %}
-<div class="grid-container">
-    <h1 class="grid-title">Immaculate Grid Solver</h1>
-    <form action="{{ url_for('grid_routes.get_player') }}" method="POST" class="prompts-form">
-        <div class="prompts-container">
-            {{ prompt('Prompt 1', 'prompt1',  team_mappings, option_groups, form_data.get('prompt1') if form_data else None) }}
-            {{ prompt('Prompt 2', 'prompt2', team_mappings, option_groups, form_data.get('prompt2') if form_data else None) }}
-        </div>
-        <button type="submit" class="submit-button">Get Player</button>
-    </form>
-</div>
-{% endblock %}
->>>>>>> 0f9d042 (adding prompts with dropdown menus)

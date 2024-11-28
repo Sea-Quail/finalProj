@@ -2,16 +2,7 @@ from abc import ABC, abstractmethod
 
 from sqlalchemy.orm import Query
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 from ..models import Appearances, People, Pitching
-
-=======
->>>>>>> f0fd25d (Creating initial filter structure and some refactoring)
-=======
-from ..models import Appearances, People, Pitching
-
->>>>>>> 33d1249 (query filters)
 
 class QueryFilter(ABC):
     """
@@ -33,11 +24,6 @@ class QueryFilter(ABC):
         Apply the filter to the query. This method must be overridden by subclasses.
         """
         pass
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 33d1249 (query filters)
-
 
 class TeamFilter(QueryFilter):
     def __init__(self, query: Query, team: str):
@@ -156,8 +142,4 @@ class MiscFilter(QueryFilter):
             self.query = self.query.filter(People.world_series_champ == True)
 
         return self.query
-<<<<<<< HEAD
-=======
->>>>>>> f0fd25d (Creating initial filter structure and some refactoring)
-=======
->>>>>>> 33d1249 (query filters)
+
