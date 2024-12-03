@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - brendonnewt/ci
   pull_request:
     branches:
       - main
@@ -22,10 +23,17 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install MariaDB
+      - name: Install MariaDB 11.5
         run: |
           sudo apt-get update
-          sudo apt install mariadb-server --mariadb-server-version="11.5.2"
+          sudo apt-get install -y software-properties-common
+          sudo add-apt-repository 'deb http://ftp.osuosl.org/pub/mariadb/repo/11.5/ubuntu bionic main'
+          sudo apt-get update
+          sudo apt-get install -y mariadb-server=11.5.2-1ubuntu18.04
+
+          # Ensure the MariaDB service is started
+          sudo systemctl start mariadb
+          sudo systemctl enable mariadb
 
       - name: Create MariaDB socket directory
         run: |
