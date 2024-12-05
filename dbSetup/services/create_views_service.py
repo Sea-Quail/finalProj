@@ -117,6 +117,7 @@ def create_pitchingstats_view():
         pi.p_G,
         pi.P_GS,
         pi.p_ERA,
+        (pi.p_IPouts / 3) / (SELECT SUM(p_IPouts) / 3 FROM pitching WHERE yearID = pi.yearID AND teamID = pi.teamID) * 100 AS playing_time,
         CASE
             WHEN pe.deathYear IS NULL THEN
                 (DATEDIFF(CURDATE(), CONCAT(pe.birthYear, '-', pe.birthMonth, '-', pe.birthDay)) / 365.25)
