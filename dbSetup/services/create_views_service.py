@@ -233,10 +233,10 @@ def create_battingstats_view():
             batting b
         NATURAL JOIN
             people p
-        JOIN
-            appearances a ON b.playerID = a.playerID AND b.yearID = a.yearID
-        JOIN
-            fielding f ON b.playerID = f.playerID AND b.yearID = f.yearID
+       NATURAL JOIN
+            appearances a 
+       NATURAL JOIN
+            fielding f
     ) AS SubQuery;
     """
 
