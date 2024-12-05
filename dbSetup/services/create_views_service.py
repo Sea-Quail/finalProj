@@ -162,7 +162,7 @@ def create_battingstats_view():
     create_battingstats_view_sql = """
     CREATE OR REPLACE VIEW battingstatsview AS
     SELECT
-        Name,
+        playerID,
         Age,
         G,
         PA,
@@ -195,10 +195,11 @@ def create_battingstats_view():
         YearID,
         TeamID,
         stint,
-        position
+        position,
+        playing_time
     FROM (
         SELECT
-            CONCAT(p.nameFirst, ' ', p.nameLast) AS Name,
+            b.playerID AS playerID,
             (b.yearID - p.birthYear) AS Age,
             a.G_ALL AS G,
             (b.b_AB + b.b_BB + b.b_HBP + b.b_SH + b.b_SF) AS PA,
@@ -212,30 +213,26 @@ def create_battingstats_view():
             (((b.b_H - (b.b_2B + b.b_3B + b.b_HR)) + (2 * b.b_2B) + (3 * b.b_3B) + (4 * b.b_HR)) / b.b_AB) - (b.b_H / b.b_AB) AS ISO,
             (b.b_H - (b.b_2B + b.b_3B + b.b_HR)) AS b_1B,
             (((0.69 * b.b_BB) + (0.72 * b.b_HBP) + (0.88 * (b.b_H - (b.b_2B + b.b_3B + b.b_HR))) + (1.24 * b.b_2B) + (1.56 * b.b_3B) + (2.0 * b.b_HR)) / (b.b_AB + b.b_BB + b.b_HBP + b.b_SH + b.b_SF)) AS wOBA,
-            
-            -- wOBA 
             ((((((0.69 * b.b_BB) + (0.72 * b.b_HBP) + (0.88 * (b.b_H - (b.b_2B + b.b_3B + b.b_HR))) + (1.24 * b.b_2B) + (1.56 * b.b_3B) + (2.0 * b.b_HR)) 
-                / (b.b_AB + b.b_BB + b.b_HBP + b.b_SH + b.b_SF)) -- PA
-                  - 0.320) / 1.25 -- wOBA scale adjustment
-                  * (b.b_AB + b.b_BB + b.b_HBP + b.b_SH + b.b_SF) -- weighted runs calculation
-                  + 6500) -- league and scaling factor
-                  / 4000 * 100) -- normalization 
-                AS wRCplus,
-           
+                / (b.b_AB + b.b_BB + b.b_HBP + b.b_SH + b.b_SF)) - 0.320) / 1.25) 
+                * (b.b_AB + b.b_BB + b.b_HBP + b.b_SH + b.b_SF) + 6500) / 4000 * 100 AS wRCplus,
             ((b.b_SB - b.b_CS) * 0.2) AS BsR,
             (f.f_PO + f.f_A) AS Total_Defensive_Plays,
             ((f.f_PO + f.f_A) * 0.1 + f.f_ZR * 0.2 + f.f_DP * 0.5) AS FRAA,
             b.yearID AS YearID,
             b.teamID AS TeamID,
             f.position AS position,
-            b.stint AS stint
+            b.stint AS stint,
+            (b.b_PA / (SELECT SUM(b2.b_PA) 
+               FROM batting b2 
+               WHERE b2.yearID = b.yearID AND b2.teamID = b.teamID)) * 100 AS Playing_Time
         FROM
             batting b
         NATURAL JOIN
             people p
-       NATURAL JOIN
+        NATURAL JOIN
             appearances a 
-       NATURAL JOIN
+        NATURAL JOIN
             fielding f
     ) AS SubQuery;
     """
