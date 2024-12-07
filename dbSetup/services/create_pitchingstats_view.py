@@ -90,6 +90,7 @@ def create_pitchingstats_view():
         pi.p_G,
         pi.P_GS,
         pi.p_ERA,
+        (pi.p_IPouts / 3) / (SELECT SUM(p_IPouts) / 3 FROM pitching WHERE yearID = pi.yearID AND teamID = pi.teamID) * 100 AS p_playing_time,
         CASE
             WHEN pe.deathYear IS NULL THEN
                 -- IDK when they actually find the guys age for that season so i put 03.27 which is usually opening day

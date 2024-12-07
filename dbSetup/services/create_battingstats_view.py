@@ -55,6 +55,9 @@ def create_battingstats_view():
         ((b.b_H - (b.b_2B + b.b_3B + b.b_HR)) + (2 * b.b_2B) + (3 * b.b_3B) + (4 * b.b_HR)) / b.b_AB AS b_SLG,
         (((b.b_H - (b.b_2B + b.b_3B + b.b_HR)) + (2 * b.b_2B) + (3 * b.b_3B) + (4 * b.b_HR)) / b.b_AB) - (b.b_H / b.b_AB) AS b_ISO,
         (b.b_H - (b.b_2B + b.b_3B + b.b_HR)) AS b_b_1B,
+        (b.b_PA / (SELECT SUM(b2.b_PA) 
+               FROM batting b2 
+               WHERE b2.yearID = b.yearID AND b2.teamID = b.teamID)) * 100 AS b_Playing_Time
         br.wRC_plus,
 
                                                 -- calculation of 1b
