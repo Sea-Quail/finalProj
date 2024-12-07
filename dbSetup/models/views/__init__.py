@@ -79,3 +79,12 @@ class PitchingStatsView(Base):
     #p_WAR = Column(Float, nullable = True) # Wins Above Replacement
 
     # __table_args__ and relationships not needed because this is a view
+
+class WarData(Base):
+    __tablename__ = "WARtable"
+    wardata_ID = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
+    Name = Column(String(255), nullable=False)
+    yearID = Column(SmallInteger, nullable=False)
+    WAR = Column(Float, nullable=True)
+    WRC_Plus = Column(Integer, nullable=True)
+    

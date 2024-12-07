@@ -786,6 +786,11 @@ class Divisions(Base):
         CheckConstraint("division_active IN ('Y', 'N')", name="chk_division_active"),
     )
 
+
+
+
+
+
 class WobaWeights(Base):
     __tablename__ = "wobaweights"
     wobaweights_ID = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
@@ -803,3 +808,5 @@ class WobaWeights(Base):
     R_PA = Column(Float, nullable=False)
     R_W = Column(Float, nullable=False)
     cFIP = Column(Float, nullable=False)
+
+
