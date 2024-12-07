@@ -1,6 +1,29 @@
+import csv
+import os
 from csi3335f2024 import mysql
 from sqlalchemy import text
 from utils import create_session_from_str, create_enginestr_from_values
+
+from sqlalchemy import (
+    Column,
+    Float,
+    Integer,
+    SmallInteger,
+    String,
+)
+from sqlalchemy.orm import DeclarativeBase
+
+class Base(DeclarativeBase):
+    pass
+
+
+class WarData(Base):
+    __tablename__ = "WarData"
+    wardata_ID = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
+    Name = Column(String(255), nullable=False)
+    yearID = Column(SmallInteger, nullable=False)
+    WRC_Plus = Column(Integer, nullable=True)
+    
 
 def create_battingstats_view():
     # Create session using the utility function
@@ -32,6 +55,7 @@ def create_battingstats_view():
         ((b.b_H - (b.b_2B + b.b_3B + b.b_HR)) + (2 * b.b_2B) + (3 * b.b_3B) + (4 * b.b_HR)) / b.b_AB AS b_SLG,
         (((b.b_H - (b.b_2B + b.b_3B + b.b_HR)) + (2 * b.b_2B) + (3 * b.b_3B) + (4 * b.b_HR)) / b.b_AB) - (b.b_H / b.b_AB) AS b_ISO,
         (b.b_H - (b.b_2B + b.b_3B + b.b_HR)) AS b_b_1B,
+        br.wRC_plus,
 
                                                 -- calculation of 1b
         (((w.wBB * (b.b_BB - b.b_IBB)) + (w.wHBP * b.b_HBP) + (w.w1b * (b.b_H - (b.b_2B + b.b_3B + b.b_HR))) + (w.w2b * b.b_2B) + (w.w3b * b.b_3B) + (w.whr * b.b_HR))
@@ -62,6 +86,8 @@ def create_battingstats_view():
         fielding f ON b.playerID = f.playerID AND b.yearID = f.yearID AND a.teamID = b.teamID
     JOIN
         wobaweights w ON w.yearID = b.yearID
+    JOIN 
+        WarData br ON CONCAT(p.nameFirst, ' ', p.nameLast) = br.Name AND b.yearID = br.yearID
     HAVING
         b_PA > 0 -- exclude pitchers;
     """
@@ -79,11 +105,10 @@ def create_battingstats_view():
 def create_table_if_not_exists(session):
     # SQL query to create the WARtable
     create_table_query = """
-    CREATE TABLE IF NOT EXISTS WARtable (
+    CREATE TABLE IF NOT EXISTS WarData (
         wardata_ID INT AUTO_INCREMENT PRIMARY KEY,
         Name VARCHAR(255) NOT NULL,
         yearID SMALLINT NOT NULL,
-        WAR FLOAT,
         WRC_Plus INT
     );
     """
@@ -105,7 +130,6 @@ def insert_csv_data(session, csv_file_path):
                 wardata = WarData(
                     Name=row["player_name"],
                     yearID=int(row["year_ID"]),
-                    WAR=float(row["fg_pwar162"]) if row["fg_pwar162"] != 'NA' else None,
                     WRC_Plus = int(row["wRC_plus"]) if row["wRC_plus"] != 'NA' else None
                 )
                 session.add(wardata)
@@ -122,11 +146,10 @@ def create_warstats_csv_view():
     project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     csv_file_path = os.path.join(project_root, 'static', 'csv', 'BattingWarData.csv')
     
-    print(f"Attempting to open file at: {csv_file_path}")  # Debugging line to verify the file path
+    
 
     # Create engine string and session
     engine_str = create_enginestr_from_values(mysql=mysql)
-    print(f"Using connection string: {engine_str}")  # Debugging line to verify the engine string
     session = create_session_from_str(engine_str)
 
     # Step 1: Create the table

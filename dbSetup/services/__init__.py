@@ -5,7 +5,7 @@ from .awardsshare_csv_service import upload_awardsshare_csv
 from .batting_csv_service import upload_batting_csv
 from .battingpost_csv_service import upload_battingpost_csv
 from .careerwarleaders_csv_service import upload_careerwarleaders_csv
-from .create_battingstats_view import create_battingstats_view
+from .create_battingstats_view import create_battingstats_view, create_warstats_csv_view
 from .create_leagueavg_view import create_lgavg_view
 from .create_pitchingstats_view import create_pitchingstats_view
 from .collegeplaying_csv_service import upload_collegeplaying_csv
