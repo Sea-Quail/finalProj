@@ -11,6 +11,7 @@
                             <tr>
                                 <th id="{{ position }}-name-header">Player Name</th>
                                 {% if position == "P" %}
+                                    <th id="{{ position }}-pt-header">Playing Time</th>
                                     <th id="{{ position }}-era-header">ERA</th>
                                     <th id="{{ position }}-hr9-header">HR/9</th>
                                     <th id="{{ position }}-ip-header">IP</th>
@@ -28,10 +29,11 @@
                         <tbody>
                             {% for player in players %}
                                 <tr class="player-row">
-                                    <td><a href="https://www.baseball-reference.com/players/{{ player.playerID[0] }}/{{ player.playerID }}.shtml">
+                                    <td><a href="{{ url_for('player_routes.get_player', playerID=player.playerID) }}">
                                         {{ player.nameFirst }} {{ player.nameLast }}
                                     </a></td>
                                     {% if position == "P" %}
+                                        <td>{{ player.p_playing_time }}%</td>
                                         <td>{{ player.p_ERA }}</td>
                                         <td>{{ player.p_HR_div9 }}</td>
                                         <td>{{ player.p_IP }}</td>
@@ -59,19 +61,40 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Sorting function
+        // Function to expand the table by clicking the "Show More" button
+        function expandTable(table) {
+            const showMoreBtn = table.nextElementSibling;
+            if (showMoreBtn && showMoreBtn.classList.contains("show-more-btn") && showMoreBtn.textContent === "Show More") {
+                showMoreBtn.click();
+            }
+        }
+
         // Sorting function
         function sortTable(table, column, asc = true) {
+            expandTable(table);
+
             const dirModifier = asc ? 1 : -1;
             const tBody = table.tBodies[0];
             const rows = Array.from(tBody.querySelectorAll("tr"));
 
             // Sort each row
             const sortedRows = rows.sort((a, b) => {
-                const aColText = a.querySelector(`td:nth-child(${column + 1})`).textContent.trim();
-                const bColText = b.querySelector(`td:nth-child(${column + 1})`).textContent.trim();
+                var aColText = a.querySelector(`td:nth-child(${column + 1})`).textContent.trim();
+                var bColText = b.querySelector(`td:nth-child(${column + 1})`).textContent.trim();
 
-                return aColText > bColText ? (1 * dirModifier) : (-1 * dirModifier);
+                // Remove percent sign and convert to number if present
+                if (aColText.endsWith('%')) {
+                    aColText = aColText.slice(0, -1);
+                }
+
+                if (bColText.endsWith('%')) {
+                    bColText = bColText.slice(0, -1);
+                }
+
+                const aColValue = isNaN(aColText) ? aColText : parseFloat(aColText);
+                const bColValue = isNaN(bColText) ? bColText : parseFloat(bColText);
+
+                return aColValue > bColValue ? (1 * dirModifier) : (-1 * dirModifier);
             });
 
             // Remove all existing TRs from the table
