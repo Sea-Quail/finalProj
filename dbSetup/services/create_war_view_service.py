@@ -14,7 +14,6 @@ def insert_csv_data(session, csv_file_path):
                 # Ensure data is valid before inserting
                 wardata = WarData(
                     playerID=row["key_bbref"],
-                    Name=row["player_name"],
                     yearID=int(row["year_ID"]),
                     WRC_Plus=int(row["wRC_plus"]) if row["wRC_plus"] != 'NA' else None,
                     WAR=float(row["bwar162"]) if row["bwar162"] != 'NA' else None
