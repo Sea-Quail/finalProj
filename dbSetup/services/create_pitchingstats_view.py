@@ -90,6 +90,7 @@ def create_pitchingstats_view():
         pi.p_G,
         pi.P_GS,
         pi.p_ERA,
+        CASE
             WHEN pe.birthYear IS NULL THEN
                 NULL -- Age is null if birth year is unknown
             ELSE
