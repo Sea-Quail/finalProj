@@ -138,8 +138,10 @@ def get_sql():
     ) ENGINE=InnoDB AUTO_INCREMENT=339815 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci"""
     sql.append(season_war_sql)
 
-    batting_sql = """ALTER TABLE batting ADD COLUMN b_1B SMALLINT(6) AS (b_H - (b_2B + b_3B + b_HR)) STORED AFTER b_H"""
-    sql.append(batting_sql)
+    batting_1= """ALTER TABLE batting ADD COLUMN b_1B SMALLINT(6) AS (b_H - (b_2B + b_3B + b_HR)) STORED AFTER b_H """
+    batting_2 = """ALTER TABLE batting ADD COLUMN b_PA INT AS (b_AB + b_BB + b_HBP + b_SH + b_SF) STORED """
+    sql.append(batting_1)
+    sql.append(batting_2)
 
     # Added to provide an easy way to access summary and depth chart info
     pitching_stats_sql = """CREATE TABLE IF NOT EXISTS `pitchingstats` ( 
@@ -200,5 +202,15 @@ def get_sql():
         CONSTRAINT `bstats_ibfk_1` FOREIGN KEY (`playerID`) REFERENCES `people` (`playerID`) 
     ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci"""
     sql.append(batting_stats_sql)
+
+    war_data_sql = """CREATE TABLE IF NOT EXISTS WarData ( 
+        wardata_ID INT AUTO_INCREMENT PRIMARY KEY, 
+        playerID VARCHAR(9), 
+        Name VARCHAR(255) NOT NULL, 
+        yearID SMALLINT NOT NULL, 
+        WRC_Plus INT, 
+        WAR FLOAT);"""
+    
+    sql.append(war_data_sql)
 
     return sql
