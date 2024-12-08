@@ -5,7 +5,7 @@
 1. [Project Setup](#project-setup)
 2. [Usage](#usage)
 3. [Starting The App](#starting-the-app)
-4. [Documatation](#documentation)
+4. [Documentation](#documentation)
 5. [Navigating the Project](#navigating-the-project)
 6. [Modifications of the Baseball schema/data](#modifications-of-the-baseball-schemadata)
 7. [App Features](#app-features)
@@ -127,7 +127,7 @@ After activating the venv and setting up the database, you're ready to get start
 flask run
 ```
 
-### Note: If you manually set up the database using the baseball.sql file, you will need to seed the users to have access to an admin
+### Note: If you manually set up the database using the baseball.sql file, you will need to seed the users after running to have access to an admin
 
 #### For Windows
 
@@ -164,7 +164,7 @@ The project is divided into two main folders, app and dbSetup. The app directory
 
 - /models: This is where all of the ORM models are stored. Models used to represent tables are located in the models/tables directory
 
-- /routes: This is where all of the routes are stored. These routes are then stored as [Blueprints](https://flask.palletsprojects.com/en/3.0.x/blueprints/) in the app/init.py
+- /routes: This is where all of the routes are stored. These routes are then stored as Blueprints in the app/init.py
 
 - /static: This is where resources like CSS, JS, or any other files that we need to store that don't have application logic can be stored
 
@@ -345,13 +345,14 @@ This directory contains the information needed to analyze a systems cores so tha
 ### Task Logs
 
 - Brendon
-    1. Table Updates
+    1. Table Updates / Additions
         1. Allstarfull
         2. Leagues
         3. People
         4. Schools
         5. Seriespost
         6. Teams
+        7. CareerWarLeaders
     2. Immaculate Grid Page
     3. Login Page
     4. Team Summary and Depth Chart Page
@@ -369,22 +370,25 @@ This directory contains the information needed to analyze a systems cores so tha
     16. Update Page
 
 - Catherine
-    1. Table Updates
+    1. Table Updates / Additions
         1. Appearances
         2. Fielding
         3. Homegames
         4. Parks
         5. Pitching
         6. Divisions
+        7. WobaWeights
+        8. SeasonWarLeaders
     2. Position Filter
     3. Season Filter
     4. Rarity
-    5. Depth Chart
+    5. Depth Chart Page
     6. Team Summary Page
     7. Update Page
-    8. Database testing and debugging
+    8. Database testing, debugging, and modifying
     9. Code Review
     10. UI Testing and bug fixing
+    11. BattingStats debugging / fixing
 
 - Icko
     1. Table Updates
@@ -402,6 +406,7 @@ This directory contains the information needed to analyze a systems cores so tha
     5. Code Review
     6. Database debugging
     7. Research for pitching stats calculations
+    8. Immaculate Grid Research
 
 - Noah
     1. Table Updates

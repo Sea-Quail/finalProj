@@ -6,7 +6,8 @@ from csi3335f2024 import mysql
 import csi3335f2024 as cfg
 
 from sqlalchemy import text
-from utils import create_session_from_str, create_enginestr_from_values
+from utils import create_enginestr_from_values, create_session_from_str
+
 
 
     
@@ -36,20 +37,17 @@ def create_battingstats_view():
         ROUND((b.b_BB / (b.b_AB + b.b_BB + b.b_HBP + b.b_SH + b.b_SF)) * 100, 1) AS b_BB_percent,
         ROUND((b.b_SO / (b.b_AB + b.b_BB + b.b_HBP + b.b_SH + b.b_SF)) * 100, 1) AS b_K_percent,
         ROUND((b.b_H - b.b_HR) / (b.b_AB - b.b_SO - b.b_HR + b.b_SF), 3) AS b_BABIP,
-        (b.b_H / b.b_AB) AS b_AVG,
-        ((b.b_H - (b.b_2B + b.b_3B + b.b_HR)) + (2 * b.b_2B) + (3 * b.b_3B) + (4 * b.b_HR)) / b.b_AB AS b_SLG,
-        (((b.b_H - (b.b_2B + b.b_3B + b.b_HR)) + (2 * b.b_2B) + (3 * b.b_3B) + (4 * b.b_HR)) / b.b_AB) - (b.b_H / b.b_AB) AS b_ISO,
-        b.b_1B,  -- Directly using the b_b_1B column from the batting table
-        (b.b_PA / (SELECT SUM(b2.b_PA) 
-               FROM batting b2 
-               WHERE b2.yearID = b.yearID AND b2.teamID = b.teamID)) * 100 AS b_Playing_Time,
-        br.WRC_Plus AS b_wRCPlus,
-        ROUND(br.WAR, 1) AS b_WAR,
-        -- calculation of wOBA and wRC
-        (((w.wBB * (b.b_BB - b.b_IBB)) + (w.wHBP * b.b_HBP) + (w.w1b * (b.b_H - (b.b_2B + b.b_3B + b.b_HR))) + (w.w2b * b.b_2B) + (w.w3b * b.b_3B) + (w.whr * b.b_HR))
-            / (b.b_AB + b.b_BB - b.b_IBB + b.b_SF + b.b_HBP))
+        ROUND((b.b_H / b.b_AB), 3) AS b_AVG,
+        ROUND(((b.b_H - (b.b_2B + b.b_3B + b.b_HR)) + (2 * b.b_2B) + (3 * b.b_3B) + (4 * b.b_HR)) / b.b_AB, 3) AS b_SLG,
+        ROUND((((b.b_H - (b.b_2B + b.b_3B + b.b_HR)) + (2 * b.b_2B) + (3 * b.b_3B) + (4 * b.b_HR)) / b.b_AB) - (b.b_H / b.b_AB), 3) AS b_ISO,
+        (b.b_H - (b.b_2B + b.b_3B + b.b_HR)) AS b_b_1B,
+
+                                                -- calculation of 1b
+        ROUND((((w.wBB * (b.b_BB - b.b_IBB)) + (w.wHBP * b.b_HBP) + (w.w1b * (b.b_H - (b.b_2B + b.b_3B + b.b_HR))) + (w.w2b * b.b_2B) + (w.w3b * b.b_3B) + (w.whr * b.b_HR))
+            / (b.b_AB + b.b_BB - b.b_IBB + b.b_SF + b.b_HBP)), 3)
             AS b_wOBA,
-        (
+
+        ROUND((
         -- woba
         (    ((((w.wBB * (b.b_BB - b.b_IBB)) + (w.wHBP * b.b_HBP) + (w.w1b * (b.b_H - (b.b_2B + b.b_3B + b.b_HR))) + (w.w2b * b.b_2B) + (w.w3b * b.b_3B) + (w.whr * b.b_HR))
             / (b.b_AB + b.b_BB - b.b_IBB + b.b_SF + b.b_HBP))
@@ -59,7 +57,7 @@ def create_battingstats_view():
         +
             ( w.r_pa) )
         *
-        (b.b_AB + b.b_BB + b.b_HBP + b.b_SH + b.b_SF) -- PA
+        (b.b_AB + b.b_BB + b.b_HBP + b.b_SH + b.b_SF), 0) -- PA
         AS b_wRC
     FROM
         batting b
