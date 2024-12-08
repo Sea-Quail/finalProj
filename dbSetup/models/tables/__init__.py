@@ -809,4 +809,11 @@ class WobaWeights(Base):
     R_W = Column(Float, nullable=False)
     cFIP = Column(Float, nullable=False)
 
-
+class WarData(Base):
+    __tablename__ = "WarData"
+    wardata_ID = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
+    playerID = Column(String, nullable=False)
+    Name = Column(String(255), nullable=False)
+    yearID = Column(SmallInteger, nullable=False)
+    WRC_Plus = Column(Integer, nullable=True)
+    WAR = Column(Float, nullable=True)
