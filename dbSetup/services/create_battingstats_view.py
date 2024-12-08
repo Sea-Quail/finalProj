@@ -20,6 +20,7 @@ class Base(DeclarativeBase):
 class WarData(Base):
     __tablename__ = "WarData"
     wardata_ID = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
+    playerID = Column(String, nullable=False)
     Name = Column(String(255), nullable=False)
     yearID = Column(SmallInteger, nullable=False)
     WRC_Plus = Column(Integer, nullable=True)
@@ -57,9 +58,8 @@ def create_battingstats_view():
         (b.b_H - (b.b_2B + b.b_3B + b.b_HR)) AS b_b_1B,
         (b.b_PA / (SELECT SUM(b2.b_PA) 
                FROM batting b2 
-               WHERE b2.yearID = b.yearID AND b2.teamID = b.teamID)) * 100 AS b_Playing_Time
-        br.wRC_plus,
-
+               WHERE b2.yearID = b.yearID AND b2.teamID = b.teamID)) * 100 AS b_Playing_Time,
+        br.WRC_Plus AS b_wRCPlus,
                                                 -- calculation of 1b
         (((w.wBB * (b.b_BB - b.b_IBB)) + (w.wHBP * b.b_HBP) + (w.w1b * (b.b_H - (b.b_2B + b.b_3B + b.b_HR))) + (w.w2b * b.b_2B) + (w.w3b * b.b_3B) + (w.whr * b.b_HR))
             / (b.b_AB + b.b_BB - b.b_IBB + b.b_SF + b.b_HBP))
@@ -90,7 +90,7 @@ def create_battingstats_view():
     JOIN
         wobaweights w ON w.yearID = b.yearID
     JOIN 
-        WarData br ON CONCAT(p.nameFirst, ' ', p.nameLast) = br.Name AND b.yearID = br.yearID
+        WarData br ON br.playerID = b.playerID AND b.yearID = br.yearID
     HAVING
         b_PA > 0 -- exclude pitchers;
     """
@@ -110,6 +110,7 @@ def create_table_if_not_exists(session):
     create_table_query = """
     CREATE TABLE IF NOT EXISTS WarData (
         wardata_ID INT AUTO_INCREMENT PRIMARY KEY,
+        playerID VARCHAR(9),
         Name VARCHAR(255) NOT NULL,
         yearID SMALLINT NOT NULL,
         WRC_Plus INT
@@ -131,17 +132,17 @@ def insert_csv_data(session, csv_file_path):
             reader = csv.DictReader(file)
             for row in reader:
                 wardata = WarData(
+                    playerID=row["key_bbref"],
                     Name=row["player_name"],
                     yearID=int(row["year_ID"]),
                     WRC_Plus = int(row["wRC_plus"]) if row["wRC_plus"] != 'NA' else None
                 )
                 session.add(wardata)
         session.commit()  # Commit the changes to insert the data
-        print("CSV data inserted successfully.")
     except FileNotFoundError:
         print(f"File not found: {csv_file_path}")
     except Exception as e:
-        print(f"Error during CSV processing or data insertion: {e}")
+        print(f"Error during processing or data insertion: {e}")
         session.rollback()  # Rollback in case of error
 
 def create_warstats_csv_view():
