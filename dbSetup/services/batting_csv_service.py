@@ -147,16 +147,21 @@ def split_csv(file_path, chunksize=CHUNK_SIZE):
 
 def upload_batting_csv():
     print("Updating batting table")
-    csv_file_path = get_csv_path("Batting.csv")
-    if not os.path.exists(csv_file_path):
+    batting_csv_file_path = get_csv_path("Batting.csv")
+   
+    if not os.path.exists(batting_csv_file_path):
         print("Error: Batting.csv not found")
         return
+   
+    
 
-    chunks = list(split_csv(csv_file_path))
+    batting_chunks = list(split_csv(batting_csv_file_path))
+
 
     # Use multiprocessing to process chunks
     with Pool(processes=NUM_PROCESSES) as pool:
-        results = pool.map(process_chunk, chunks)
+        batting_results = pool.map(process_chunk, batting_chunks)
+        
 
     # Aggregate results
     aggregated = {

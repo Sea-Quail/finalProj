@@ -1,6 +1,30 @@
+import csv
+import os
 from csi3335f2024 import mysql
 from sqlalchemy import text
 from utils import create_session_from_str, create_enginestr_from_values
+
+from sqlalchemy import (
+    Column,
+    Float,
+    Integer,
+    SmallInteger,
+    String,
+)
+from sqlalchemy.orm import DeclarativeBase
+
+class Base(DeclarativeBase):
+    pass
+
+
+class WarData(Base):
+    __tablename__ = "WarData"
+    wardata_ID = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
+    playerID = Column(String, nullable=False)
+    Name = Column(String(255), nullable=False)
+    yearID = Column(SmallInteger, nullable=False)
+    WRC_Plus = Column(Integer, nullable=True)
+    
 
 def create_battingstats_view():
     # Create session using the utility function
@@ -32,7 +56,10 @@ def create_battingstats_view():
         ((b.b_H - (b.b_2B + b.b_3B + b.b_HR)) + (2 * b.b_2B) + (3 * b.b_3B) + (4 * b.b_HR)) / b.b_AB AS b_SLG,
         (((b.b_H - (b.b_2B + b.b_3B + b.b_HR)) + (2 * b.b_2B) + (3 * b.b_3B) + (4 * b.b_HR)) / b.b_AB) - (b.b_H / b.b_AB) AS b_ISO,
         (b.b_H - (b.b_2B + b.b_3B + b.b_HR)) AS b_b_1B,
-
+        (b.b_PA / (SELECT SUM(b2.b_PA) 
+               FROM batting b2 
+               WHERE b2.yearID = b.yearID AND b2.teamID = b.teamID)) * 100 AS b_Playing_Time,
+        br.WRC_Plus AS b_wRCPlus,
                                                 -- calculation of 1b
         (((w.wBB * (b.b_BB - b.b_IBB)) + (w.wHBP * b.b_HBP) + (w.w1b * (b.b_H - (b.b_2B + b.b_3B + b.b_HR))) + (w.w2b * b.b_2B) + (w.w3b * b.b_3B) + (w.whr * b.b_HR))
             / (b.b_AB + b.b_BB - b.b_IBB + b.b_SF + b.b_HBP))
@@ -62,6 +89,8 @@ def create_battingstats_view():
         fielding f ON b.playerID = f.playerID AND b.yearID = f.yearID AND a.teamID = b.teamID
     JOIN
         wobaweights w ON w.yearID = b.yearID
+    JOIN 
+        WarData br ON br.playerID = b.playerID AND b.yearID = br.yearID
     HAVING
         b_PA > 0 -- exclude pitchers;
     """
@@ -74,4 +103,64 @@ def create_battingstats_view():
     except Exception as e:
         print(f"Error creating 'battingstatsview': {e}")
 
+    session.close()
+
+def create_table_if_not_exists(session):
+    # SQL query to create the WARtable
+    create_table_query = """
+    CREATE TABLE IF NOT EXISTS WarData (
+        wardata_ID INT AUTO_INCREMENT PRIMARY KEY,
+        playerID VARCHAR(9),
+        Name VARCHAR(255) NOT NULL,
+        yearID SMALLINT NOT NULL,
+        WRC_Plus INT
+    );
+    """
+    
+    try:
+        # Wrap the query with text() to ensure it's correctly interpreted
+        session.execute(text(create_table_query))
+        session.commit()  # Commit the transaction
+        print("Table 'WARtable' created successfully.")
+    except Exception as e:
+        print(f"Error creating table: {e}")
+        session.rollback()  # Rollback in case of error
+
+def insert_csv_data(session, csv_file_path):
+    try:
+        with open(csv_file_path, mode="r") as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                wardata = WarData(
+                    playerID=row["key_bbref"],
+                    Name=row["player_name"],
+                    yearID=int(row["year_ID"]),
+                    WRC_Plus = int(row["wRC_plus"]) if row["wRC_plus"] != 'NA' else None
+                )
+                session.add(wardata)
+        session.commit()  # Commit the changes to insert the data
+    except FileNotFoundError:
+        print(f"File not found: {csv_file_path}")
+    except Exception as e:
+        print(f"Error during processing or data insertion: {e}")
+        session.rollback()  # Rollback in case of error
+
+def create_warstats_csv_view():
+    # Get the absolute path of the project root directory (going up two levels from 'dbSetup')
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    csv_file_path = os.path.join(project_root, 'static', 'csv', 'BattingWarData.csv')
+    
+    
+
+    # Create engine string and session
+    engine_str = create_enginestr_from_values(mysql=mysql)
+    session = create_session_from_str(engine_str)
+
+    # Step 1: Create the table
+    create_table_if_not_exists(session)
+
+    # Step 2: Insert data from CSV
+    insert_csv_data(session, csv_file_path)
+
+    # Close the session after everything is done
     session.close()
