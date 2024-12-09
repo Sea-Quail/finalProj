@@ -73,6 +73,8 @@ def create_battingstats_view():
         WarData br ON br.playerID = b.playerID AND b.yearID = br.yearID
     WHERE 
         (b.b_AB + b.b_BB + b.b_HBP + b.b_SH + b.b_SF) > 0  -- exclude pitchers
+        (  (b.b_AB + b.b_BB + b.b_HBP + b.b_SH + b.b_SF) > 0
+            OR (b.b_AB + b.b_BB + b.b_HBP + b.b_SH + b.b_SF) IS NULL)
         AND (f.position != 'P' OR f.position IS NULL);
 
     """
